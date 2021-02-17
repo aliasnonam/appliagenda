@@ -25,7 +25,10 @@
 	{{ form_row(formUpdate.prenom) }}
 
 	<ul class="telephone" data-prototype="{{ form_widget(formUpdate.telephone.vars.prototype)|e('html_attr') }}">
-		<li>{{ form_row(formUpdate.telephone) }}</li>
+		{% for tag in formUpdate.telephone %}
+            <li>{{ form_row(tag) }}</li>
+        {% endfor %}
+		{# <li>{{ form_row(formUpdate.telephone) }}</li> #}
 		<button type="button" class="add_item_link" data-collection-holder-class="telephone">Add a num</button>
 	</ul>
 

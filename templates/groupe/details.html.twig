@@ -12,7 +12,7 @@
 			<tr class="text-center bg-dark text-light">
 				<th colspan="2" class="align-middle">
 					{{ form_start(formUpdate) }}
-					{{form_row(formUpdate.nom)}}
+					{{form_row(formUpdate.nom)}}<p class="mb-1">Editez le nom du groupe</p>
                     <button type="submit" class-"btn btn-block btn-dark"><i class="fas fa-pen-alt" style="color : #28a745;"></i></button>
 					{{ form_end(formUpdate) }}
 					
@@ -42,8 +42,14 @@
 		</tbody>
 	</table>
 
+	{{ form_start(formContact) }}
+		{{form_row(formContact.nom)}}
+		{{form_row(formContact.prenom)}}
+		<button class="btn btn-block btn-dark my-1" type="submit">Ajoutez un contact</button>
+	{{ form_end(formContact) }}
+
 	{{ form_start(formDelete) }}
-	<button class="btn btn-block btn-dark my-1" type="submit">Effacer</button>
+	<button class="btn btn-block btn-dark my-1" type="submit">Supprimez groupe</button>
 	{{ form_end(formDelete) }}
 
 

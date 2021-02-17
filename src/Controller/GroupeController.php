@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
 use App\Entity\Groupe;
+use App\Form\ContactType;
 use App\Form\DeleteType;
 use App\Form\GroupeType;
 use App\Repository\ContactRepository;
@@ -78,7 +80,23 @@ class GroupeController extends AbstractController
             return $this->redirectToRoute('groupe_details', ['id' => $groupe->getId()]);
         }
 
-        return $this->render('groupe/details.html.twig', ['groupe' => $groupe, 'formDelete' => $formDelete->createView(), 'formUpdate' => $formUpdate->createView()]);
+        // Form create
+        $contact = new Contact;
+        $contact->addGroupe($groupe);
+        
+        $formContact = $this->createForm(ContactType::class, $contact);
+        $formContact->handleRequest($request);
+        if ($formContact->isSubmitted() && $formContact->isValid()) {
+            $this->entityManager->persist($contact);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('groupe_details', ['id' => $groupe->getId()]);
+        }
+
+        return $this->render('groupe/details.html.twig', ['groupe' => $groupe,
+        'formDelete' => $formDelete->createView(),
+        'formUpdate' => $formUpdate->createView(),
+        'formContact' => $formContact->createView()
+        ]);
     }
 
     private function getGroupe(int $id)

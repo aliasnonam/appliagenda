@@ -33,7 +33,7 @@ class ContactController extends AbstractController
     public function getDetails(Request $request, int $id)
     {
         $contact = $this->getContact($id);
-        dump($contact);
+        $contact->getGroupe()[0]->getId();
         // Protection contre la faille CSRF pour le delete
         $formDelete = $this->createForm(DeleteType::class);
         $formDelete->handleRequest($request);
@@ -45,7 +45,6 @@ class ContactController extends AbstractController
 
         $formUpdate = $this->createForm(ContactType::class, $contact);
         $formUpdate->handleRequest($request);
-        dump($formUpdate);
         if ($formUpdate->isSubmitted() && $formUpdate->isValid()) {
             $this->entityManager->persist($contact);
             $this->entityManager->flush();

@@ -24,7 +24,7 @@ class Telephone
 
     /**
      * @ORM\ManyToOne(targetEntity=Contact::class, inversedBy="telephone")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $contact;
 
