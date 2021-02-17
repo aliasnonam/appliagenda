@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<table class="table my-3 table-bordered">
+		<thead>
+			<tr class="text-center">
+				<th class="text-light bg-success align-middle w-50 border-bottom-0" style="border-left: 3px solid #dee2e6;">Nom du groupe</th>
+				<th class="text-light bg-warning align-middle w-50 border-bottom-0" style="border-left: 3px solid #dee2e6;">Nom des contacts</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="text-center bg-dark text-light">
+				<th colspan="2" class="align-middle">
+					{{ form_start(formUpdate) }}
+					{{form_row(formUpdate.nom)}}
+                    <button type="submit" class-"btn btn-block btn-dark"><i class="fas fa-pen-alt" style="color : #28a745;"></i></button>
+					{{ form_end(formUpdate) }}
+					
+				</th>
+			</tr>
+			{% if groupe.contacts is empty %}
+				<tr class="text-center text-warning bg-dark text-light">
+					<td class="align-middle">
+						Aucun contact
+					</td>
+				</tr>
+			{% else %}
+				<tr class="text-center bg-dark text-light">
+					{% for key, grp in groupe.contacts %}
+						<td class="align-middle w-50">
+							{{grp.nom}}
+							{{grp.prenom}}
+							<a class="btn btn-block btn-dark" href={{ path('contact_details', {id:grp.id}) }}><i class="fas fa-user-edit" style="color : #ffc107;"></i></a>
+						</td>
+						{% if ((key+1)%2 == 0) %}
+						</tr>
+						<tr class="text-center text-light bg-dark">
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			</tr>
+		</tbody>
+	</table>
+
+	{{ form_start(formDelete) }}
+	<button class="btn btn-block btn-dark my-1" type="submit">Effacer</button>
+	{{ form_end(formDelete) }}
+
+
+{% endblock %}

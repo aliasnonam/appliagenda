@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block subtitle %}Bonjour Mr {{user}}, {% endblock %}
+{% block body %}
+	<table class="table my-3 table-bordered">
+		<thead>
+			<tr class="text-center">
+				<th class="text-light bg-success align-middle w-50 border-bottom-0" style="border-left: 3px solid #dee2e6;">Nom du groupe</th>
+				<th class="text-light bg-warning align-middle w-50 border-bottom-0" style="border-left: 3px solid #dee2e6;">Nom des contacts</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for groupe in groupeList %}
+				<tr class="text-center bg-dark">
+					<th colspan="2" class="align-middle">
+						<a class="btn btn-block btn-dark" href={{ path('groupe_details', {id: groupe.id}) }}>{{groupe.nom}} <i class="far fa-edit" style="color : #28a745;"></i></a>
+					</th>
+				</tr>
+				{% if groupe.contacts is empty %}
+					<tr class="text-center text-warning bg-dark">
+						<td class="align-middle">
+							Aucun contact
+						</td>
+					</tr>
+				{% else %}
+					<tr class="text-center text-warning bg-dark">
+						{% for key, grp in groupe.contacts %}
+							<td class="align-middle w-50">
+								{{grp.nom}}
+								{{grp.prenom}}
+							</td>
+							{% if ((key+1)%2 == 0) %}
+							</tr><tr class="text-center text-warning bg-dark">
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

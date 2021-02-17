@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+	<table class="table my-3 table-bordered">
+		<thead>
+			<tr class="text-center">
+				<th class="text-light bg-success align-middle w-50 border-bottom-0" style="border-left: 3px solid #dee2e6;">Contact</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="text-center bg-dark text-light">
+				<td>{{ contact.nom }}</td>
+			</tr>
+			<tr class="text-center bg-dark text-light">
+				<td>{{ contact.prenom }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	{{ form_start(formDelete) }}
+	<button class="btn btn-block btn-dark my-1" type="submit">Effacer</button>
+	{{ form_end(formDelete) }}
+
+	{{ form_start(formUpdate) }}
+	{{ form_row(formUpdate.nom) }}
+	{{ form_row(formUpdate.prenom) }}
+
+	<ul class="telephone" data-prototype="{{ form_widget(formUpdate.telephone.vars.prototype)|e('html_attr') }}">
+		<li>{{ form_row(formUpdate.telephone) }}</li>
+		<button type="button" class="add_item_link" data-collection-holder-class="telephone">Add a num</button>
+	</ul>
+
+	<button class="btn btn-block btn-dark my-1" type="submit">Modifier</button>
+	{{ form_end(formUpdate) }}
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function () {
+var $contactCollectionHolder = $('ul.telephone');
+$contactCollectionHolder.data('index', $contactCollectionHolder.find('input').length);
+$('body').on('click', '.add_item_link', function (e) {
+var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+addFormToCollection($collectionHolderClass);
+})
+});
+function addFormToCollection($collectionHolderClass) {
+var $collectionHolder = $('.' + $collectionHolderClass);
+var prototype = $collectionHolder.data('prototype');
+var index = $collectionHolder.data('index');
+var newForm = prototype;
+newForm = newForm.replace(/__name__/g, index);
+$collectionHolder.data('index', index + 1);
+var $newFormLi = $('<li></li>').append(newForm);
+$collectionHolder.append($newFormLi);
+addTagFormDeleteLink($newFormLi);
+}
+function addTagFormDeleteLink($tagFormLi) {
+var $removeFormButton = $('<button type="button">Delete this tag</button>');
+$tagFormLi.append($removeFormButton);
+$removeFormButton.on('click', function (e) {
+$tagFormLi.remove();
+});
+}
+	</script>
+{% endblock %}

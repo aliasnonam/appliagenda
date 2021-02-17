@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+	{{ form_start(form) }}
+	    {{ form_row(form.nom) }}
+        {# {{ form_row(form.prenom) }} #}
+        <button type="button" class="add_item_link" data-collection-holder-class="contact">Add a contact</button>
+        <ul class="contact" data-prototype="{{ form_widget(form.contacts.vars.prototype)|e('html_attr') }}"></ul>
+	{{ form_end(form) }}
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function () {
+            var $contactCollectionHolder = $('ul.contact');
+            $contactCollectionHolder.data('index', $contactCollectionHolder.find('input').length);
+            $('body').on('click', '.add_item_link', function (e) {
+            var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+            addFormToCollection($collectionHolderClass);
+            })
+            });
+            function addFormToCollection($collectionHolderClass) {
+            var $collectionHolder = $('.' + $collectionHolderClass);
+            var prototype = $collectionHolder.data('prototype');
+            var index = $collectionHolder.data('index');
+            var newForm = prototype;
+            newForm = newForm.replace(/__name__/g, index);
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<li></li>').append(newForm);
+            $collectionHolder.append($newFormLi);
+            addTagFormDeleteLink($newFormLi);
+            }
+            function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormButton = $('<button type="button">Delete this tag</button>');
+            $tagFormLi.append($removeFormButton);
+            $removeFormButton.on('click', function (e) {
+            $tagFormLi.remove();
+            });
+        }
+    </script>
+{% endblock %}
