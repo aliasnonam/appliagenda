@@ -27,12 +27,26 @@ class ContactController extends AbstractController
         $this->userRepository =  $userRepository;
     }
 
-     /**
+    /**
      * @Route("/contact/{id}", name="contact_details", requirements={"id"="\d+"})
      */
     public function getDetails(Request $request, int $id)
     {
         $contact = $this->getContact($id);
+
+        $formDeleteNumero = $this->createForm(DeleteType::class);
+        $formDeleteNumero->handleRequest($request);
+        if ($formDeleteNumero->isSubmitted()) {
+            foreach ($contact->getTelephone() as $NumPhone) {
+                $NumPhone->getNumPhone();
+                dump($NumPhone);
+                $this->entityManager->remove($NumPhone);
+            }
+            $this->entityManager->flush();
+            return $this->redirectToRoute("contact_details", ['id' => $contact->getId()]);
+        }
+
+
         $contact->getGroupe()[0]->getId();
         // Protection contre la faille CSRF pour le delete
         $formDelete = $this->createForm(DeleteType::class);
@@ -50,16 +64,22 @@ class ContactController extends AbstractController
             $this->entityManager->flush();
             return $this->redirectToRoute('contact_details', ['id' => $contact->getId()]);
         }
-        return $this->render('contact/details.html.twig', ['contact' => $contact, 'formDelete' => $formDelete->createView(), 'formUpdate' => $formUpdate->createView()]);
+        // return $this->render('contact/details.html.twig', ['contact' => $contact,'formDelete' => $formDelete->createView(), 'formUpdate' => $formUpdate->createView()]);
+        return $this->render('contact/details.html.twig', [
+            'contact' => $contact,
+            'formDelete' => $formDelete->createView(),
+            'formDeleteNumero' => $formDeleteNumero->createView(),
+            'formUpdate' => $formUpdate->createView()
+        ]);
     }
 
     private function getContact(int $id)
     {
         $user = $this->getUser();
-        $contact= $this->contactRepository->findOneBy(
+        $contact = $this->contactRepository->findOneBy(
             ['id' => $id]
         );
-        $contact= $this->contactRepository->findContactByUser($user, $contact);
+        $contact = $this->contactRepository->findContactByUser($user, $contact);
         if ($contact === []) {
             throw new NotFoundHttpException("contact introuvable");
         }

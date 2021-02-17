@@ -16,7 +16,6 @@
 		</tbody>
 	</table>
 
-	
 
 	{{ form_start(formUpdate) }}
 	{{ form_row(formUpdate.nom) }}
@@ -24,11 +23,10 @@
 
 	<ul class="telephone" data-prototype="{{ form_widget(formUpdate.telephone.vars.prototype)|e('html_attr') }}">
 		{% for tag in formUpdate.telephone %}
-            <li>{{ form_row(tag) }}</li>
-			{{ form_start(formDeleteNumero) }}
-			<button class="btn btn-block btn-dark my-1" type="submit">Effacez le numero</button>
-			{{ form_end(formDeleteNumero) }}
-        {% endfor %}
+
+			<li>{{ form_row(tag) }}</li>
+
+		{% endfor %}
 		{# <li>{{ form_row(formUpdate.telephone) }}</li> #}
 		<button type="button" class="add_item_link" data-collection-holder-class="telephone">Add a num</button>
 	</ul>
@@ -39,6 +37,10 @@
 	{{ form_start(formDelete) }}
 	<button class="btn btn-block btn-dark my-1" type="submit">Effacez le contact</button>
 	{{ form_end(formDelete) }}
+
+	{{ form_start(formDeleteNumero) }}
+	<button class="btn btn-block btn-dark my-1" type="submit">Effacez les numeros</button>
+	{{ form_end(formDeleteNumero) }}
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script>
