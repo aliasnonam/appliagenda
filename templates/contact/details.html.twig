@@ -16,9 +16,7 @@
 		</tbody>
 	</table>
 
-	{{ form_start(formDelete) }}
-	<button class="btn btn-block btn-dark my-1" type="submit">Effacer</button>
-	{{ form_end(formDelete) }}
+	
 
 	{{ form_start(formUpdate) }}
 	{{ form_row(formUpdate.nom) }}
@@ -32,8 +30,12 @@
 		<button type="button" class="add_item_link" data-collection-holder-class="telephone">Add a num</button>
 	</ul>
 
-	<button class="btn btn-block btn-dark my-1" type="submit">Modifier</button>
+	<button class="btn btn-block btn-dark my-1" type="submit">Modifiez</button>
 	{{ form_end(formUpdate) }}
+
+	{{ form_start(formDelete) }}
+	<button class="btn btn-block btn-dark my-1" type="submit">Effacez le contact</button>
+	{{ form_end(formDelete) }}
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script>
