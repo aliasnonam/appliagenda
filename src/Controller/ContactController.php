@@ -39,13 +39,11 @@ class ContactController extends AbstractController
         if ($formDeleteNumero->isSubmitted()) {
             foreach ($contact->getTelephone() as $NumPhone) {
                 $NumPhone->getNumPhone();
-                dump($NumPhone);
                 $this->entityManager->remove($NumPhone);
             }
             $this->entityManager->flush();
             return $this->redirectToRoute("contact_details", ['id' => $contact->getId()]);
         }
-
 
         $contact->getGroupe()[0]->getId();
         // Protection contre la faille CSRF pour le delete
@@ -56,7 +54,7 @@ class ContactController extends AbstractController
             $this->entityManager->flush();
             return $this->redirectToRoute("groupe_details", ['id' => $contact->getGroupe()[0]->getId()]);
         }
-
+        
         $formUpdate = $this->createForm(ContactType::class, $contact);
         $formUpdate->handleRequest($request);
         if ($formUpdate->isSubmitted() && $formUpdate->isValid()) {
@@ -64,7 +62,6 @@ class ContactController extends AbstractController
             $this->entityManager->flush();
             return $this->redirectToRoute('contact_details', ['id' => $contact->getId()]);
         }
-        // return $this->render('contact/details.html.twig', ['contact' => $contact,'formDelete' => $formDelete->createView(), 'formUpdate' => $formUpdate->createView()]);
         return $this->render('contact/details.html.twig', [
             'contact' => $contact,
             'formDelete' => $formDelete->createView(),
