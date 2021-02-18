@@ -36,9 +36,18 @@ class ContactController extends AbstractController
 
         $formDeleteNumero = $this->createForm(DeleteType::class);
         $formDeleteNumero->handleRequest($request);
+
+        //test
+        $a = $contact->getTelephone();
+        foreach ($a as $ab) {
+            $ab->getNumPhone();
+            dump($ab);
+        }
+
         if ($formDeleteNumero->isSubmitted()) {
             foreach ($contact->getTelephone() as $NumPhone) {
                 $NumPhone->getNumPhone();
+                dump($NumPhone);
                 $this->entityManager->remove($NumPhone);
             }
             $this->entityManager->flush();
@@ -54,7 +63,7 @@ class ContactController extends AbstractController
             $this->entityManager->flush();
             return $this->redirectToRoute("groupe_details", ['id' => $contact->getGroupe()[0]->getId()]);
         }
-        
+
         $formUpdate = $this->createForm(ContactType::class, $contact);
         $formUpdate->handleRequest($request);
         if ($formUpdate->isSubmitted() && $formUpdate->isValid()) {
